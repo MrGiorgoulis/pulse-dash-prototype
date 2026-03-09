@@ -18,7 +18,12 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 };
 
 export const isOperatorRole = (role: UserRole) =>
-  ["operator-admin", "trader", "dispatcher", "settlement-manager"].includes(role);
+  ["operator-admin", "trader", "dispatcher", "settlement-manager"].includes(
+    role,
+  );
+
+export const isCustomerRole = (role: UserRole) =>
+  ["customer-admin", "customer-viewer"].includes(role);
 
 interface RoleContextType {
   role: UserRole;
@@ -32,7 +37,13 @@ const RoleContext = createContext<RoleContextType>({
 
 export const useRole = () => useContext(RoleContext);
 
-export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [role, setRole] = useState<UserRole>("operator-admin");
-  return <RoleContext.Provider value={{ role, setRole }}>{children}</RoleContext.Provider>;
+  return (
+    <RoleContext.Provider value={{ role, setRole }}>
+      {children}
+    </RoleContext.Provider>
+  );
 };

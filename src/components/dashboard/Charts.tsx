@@ -33,12 +33,18 @@ const coverageData = [
 export function CurtailmentChart() {
   return (
     <div className="bg-card rounded-xl border border-border p-5">
-      <h3 className="text-sm font-semibold text-card-foreground mb-4">Curtailment Delivered (MW)</h3>
+      <h3 className="text-sm font-semibold text-card-foreground mb-4">
+        Curtailment Delivered (MW)
+      </h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={curtailmentData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 13%, 91%)" />
-            <XAxis dataKey="time" tick={{ fontSize: 12 }} stroke="hsl(220, 9%, 46%)" />
+            <XAxis
+              dataKey="time"
+              tick={{ fontSize: 12 }}
+              stroke="hsl(220, 9%, 46%)"
+            />
             <YAxis tick={{ fontSize: 12 }} stroke="hsl(220, 9%, 46%)" />
             <Tooltip
               contentStyle={{
@@ -66,12 +72,18 @@ export function CurtailmentChart() {
 export function CoverageChart() {
   return (
     <div className="bg-card rounded-xl border border-border p-5">
-      <h3 className="text-sm font-semibold text-card-foreground mb-4">Asset Coverage Distribution</h3>
+      <h3 className="text-sm font-semibold text-card-foreground mb-4">
+        Asset Coverage Distribution
+      </h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={coverageData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 13%, 91%)" />
-            <XAxis dataKey="zone" tick={{ fontSize: 12 }} stroke="hsl(220, 9%, 46%)" />
+            <XAxis
+              dataKey="zone"
+              tick={{ fontSize: 12 }}
+              stroke="hsl(220, 9%, 46%)"
+            />
             <YAxis tick={{ fontSize: 12 }} stroke="hsl(220, 9%, 46%)" />
             <Tooltip
               contentStyle={{
@@ -81,7 +93,113 @@ export function CoverageChart() {
                 fontSize: "13px",
               }}
             />
-            <Bar dataKey="assets" fill="hsl(152, 69%, 41%)" radius={[4, 4, 0, 0]} />
+            <Bar
+              dataKey="assets"
+              fill="hsl(152, 69%, 41%)"
+              radius={[4, 4, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+// Customer dashboard: Curtailment Delivered by Event
+const curtailmentByEventData = [
+  { event: "Summer Peak DR", kw: 420 },
+  { event: "Grid Emergency #4", kw: 380 },
+  { event: "Voluntary Curtail", kw: 195 },
+  { event: "Scheduled Maint.", kw: 110 },
+  { event: "Winter Storm", kw: 510 },
+];
+
+export function CurtailmentByEventChart() {
+  return (
+    <div className="bg-card rounded-xl border border-border p-5">
+      <h3 className="text-sm font-semibold text-card-foreground mb-4">
+        Curtailment Delivered by Event
+      </h3>
+      <div className="h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={curtailmentByEventData}
+            layout="vertical"
+            margin={{ left: 80 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 13%, 91%)" />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 12 }}
+              stroke="hsl(220, 9%, 46%)"
+              unit=" kW"
+            />
+            <YAxis
+              type="category"
+              dataKey="event"
+              tick={{ fontSize: 12 }}
+              stroke="hsl(220, 9%, 46%)"
+              width={100}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "hsl(0, 0%, 100%)",
+                border: "1px solid hsl(220, 13%, 91%)",
+                borderRadius: "8px",
+                fontSize: "13px",
+              }}
+            />
+            <Bar
+              dataKey="kw"
+              fill="hsl(217, 71%, 45%)"
+              radius={[0, 4, 4, 0]}
+              name="Delivered (kW)"
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+// Customer dashboard: Asset Health Distribution
+const assetHealthData = [
+  { status: "Ready", count: 42 },
+  { status: "Needs Calibration", count: 8 },
+  { status: "Maintenance", count: 3 },
+  { status: "Offline", count: 2 },
+];
+
+export function AssetHealthChart() {
+  return (
+    <div className="bg-card rounded-xl border border-border p-5">
+      <h3 className="text-sm font-semibold text-card-foreground mb-4">
+        Asset Health Distribution
+      </h3>
+      <div className="h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={assetHealthData}>
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 13%, 91%)" />
+            <XAxis
+              dataKey="status"
+              tick={{ fontSize: 11 }}
+              stroke="hsl(220, 9%, 46%)"
+            />
+            <YAxis tick={{ fontSize: 12 }} stroke="hsl(220, 9%, 46%)" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "hsl(0, 0%, 100%)",
+                border: "1px solid hsl(220, 13%, 91%)",
+                borderRadius: "8px",
+                fontSize: "13px",
+              }}
+            />
+            <Bar
+              dataKey="count"
+              fill="hsl(152, 69%, 41%)"
+              radius={[4, 4, 0, 0]}
+              name="Assets"
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -90,7 +208,11 @@ export function CoverageChart() {
 }
 
 // Status badge helper
-export function StatusBadge({ status }: { status: "active" | "completed" | "pending" | "failed" }) {
+export function StatusBadge({
+  status,
+}: {
+  status: "active" | "completed" | "pending" | "failed";
+}) {
   const styles: Record<string, string> = {
     active: "bg-status-good-muted text-status-good border-0",
     completed: "bg-status-info-muted text-status-info border-0",
